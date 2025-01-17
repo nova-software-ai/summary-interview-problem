@@ -49,10 +49,9 @@ def load_data():
             if i == 0:
                 i += 1
                 continue
-            print('row::', row)
             relations.append(AbapProgramRelation(
-                id=row['\ufeffid'],
-                abap_program_id=row['abap_program_id'],
+                id='',
+                abap_program_id=row['\ufeff"abap_program_id"'],
                 relation_type=row['relation_type'], 
                 related_abap_program_id=row['related_abap_program_id']
             ))
@@ -62,17 +61,15 @@ def load_data():
         reader = csv.DictReader(f)
         for row in reader:
             programs.append(AbapProgram(
-                id=row['\ufeffid'],
+                id=row['\ufeff"id"'],
                 display_name=row['display_name'],
                 package_name=row['package_name'],
                 type=row['type'],
-                uri=row['uri'],
-                summary=row['summary'],
-                source_code=row['source_code']
+                uri='',
+                summary='',
+                source_code=''
             ))
-            
-    print(relations)
-    print(programs)
+
     return relations, programs
 
 # TO-DO:
