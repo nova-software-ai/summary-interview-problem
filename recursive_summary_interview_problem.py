@@ -6,6 +6,8 @@ import csv
 
 sys.setrecursionlimit(3000)
 
+# assume no cycles in the graph
+
 class AbapProgram(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     uri: str = Field(description="The URI of the ABAP object.")
@@ -21,13 +23,13 @@ class AbapProgramRelation(BaseModel):
     relation_type: str = Field(description="The type of the relation.")
     related_abap_program_id: str = Field(description="The ID of the related ABAP program.")
 
-def get_single_summary_for_program_with_no_relations(program: AbapProgram) -> str:
+async def get_single_summary_for_program_with_no_relations(program: AbapProgram) -> str:
     # mocked summary
     return f"""
 This program ({program.display_name}) is a {program.type} in the {program.package_name} package.
     """
 
-def get_single_summary_for_program_with_relations(program: AbapProgram, related_programs: List[AbapProgram]) -> str:
+async def get_single_summary_for_program_with_relations(program: AbapProgram, related_programs: List[AbapProgram]) -> str:
     # mocked summary
     relations = ""
     for related_program in related_programs:
