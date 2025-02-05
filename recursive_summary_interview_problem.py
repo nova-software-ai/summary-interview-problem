@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 import uuid
 import sys
 import csv
-
+import asyncio
 sys.setrecursionlimit(3000)
 
 # assume no cycles in the graph
@@ -53,7 +53,7 @@ def load_data():
                 continue
             relations.append(AbapProgramRelation(
                 id='',
-                abap_program_id=row['\ufeff"abap_program_id"'],
+                abap_program_id=row['\ufeffabap_program_id'],
                 relation_type=row['relation_type'], 
                 related_abap_program_id=row['related_abap_program_id']
             ))
@@ -76,10 +76,11 @@ def load_data():
 
 # TO-DO:
 # implement this method
-def get_summaries_for_all_programs():
+async def get_summaries_for_all_programs():
     # Load relations from CSV
     relations, programs = load_data()
 
     pass
 
-get_summaries_for_all_programs()
+if __name__ == "__main__":
+    asyncio.run(get_summaries_for_all_programs())
