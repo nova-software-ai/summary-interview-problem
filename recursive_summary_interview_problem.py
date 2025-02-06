@@ -30,6 +30,10 @@ This program ({program.display_name}) is a {program.type} in the {program.packag
     """
 
 async def get_single_summary_for_program_with_relations(program: AbapProgram, related_programs: List[AbapProgram]) -> str:
+    for related_program in related_programs:
+        if not related_program.summary:
+            raise Exception(f"Summary for {related_program.display_name} is not set")
+    
     # mocked summary
     relations = ""
     for related_program in related_programs:
