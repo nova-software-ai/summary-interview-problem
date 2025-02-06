@@ -23,7 +23,10 @@ class AbapProgramRelation(BaseModel):
     relation_type: str = Field(description="The type of the relation.")
     related_abap_program_id: str = Field(description="The ID of the related ABAP program.")
 
-async def get_single_summary_for_program_with_no_relations(program: AbapProgram) -> str:
+async def get_single_summary_for_program_with_no_relations(program: AbapProgram) -> str:    
+    # Add fake delay to simulate LLM API call
+    await asyncio.sleep(0.5)
+
     # mocked summary
     return f"""
 This program ({program.display_name}) is a {program.type} in the {program.package_name} package.
@@ -38,6 +41,10 @@ async def get_single_summary_for_program_with_relations(program: AbapProgram, re
     relations = ""
     for related_program in related_programs:
         relations += f" - {related_program.display_name} ({related_program.type})"
+        
+    # Add fake delay to simulate LLM API call
+    await asyncio.sleep(0.5)
+        
     return f"""
 This program ({program.display_name}) is a {program.type} in the {program.package_name} package.
 
