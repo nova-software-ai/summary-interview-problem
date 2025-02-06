@@ -18,7 +18,6 @@ class AbapProgram(BaseModel):
     summary: Optional[str] = Field(description="A LLM-created summary of the ABAP object.")
 
 class AbapProgramRelation(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     abap_program_id: str = Field(description="The ID of the ABAP program.")
     relation_type: str = Field(description="The type of the relation.")
     related_abap_program_id: str = Field(description="The ID of the related ABAP program.")
@@ -63,7 +62,6 @@ def load_data():
                 i += 1
                 continue
             relations.append(AbapProgramRelation(
-                id='',
                 abap_program_id=row['\ufeffabap_program_id'],
                 relation_type=row['relation_type'], 
                 related_abap_program_id=row['related_abap_program_id']
