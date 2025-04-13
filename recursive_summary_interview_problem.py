@@ -53,20 +53,7 @@ It has the following relations:
 
 
 def load_data():
-    relations = []
-    with open('abap_program_relations.csv') as f:
-        reader = csv.DictReader(f)
-        i = 0
-        for row in reader:
-            if i == 0:
-                i += 1
-                continue
-            relations.append(AbapProgramRelation(
-                abap_program_id=row['\ufeffabap_program_id'],
-                relation_type=row['relation_type'], 
-                related_abap_program_id=row['related_abap_program_id']
-            ))
-            
+    # First load all programs
     programs = []
     with open('abap_programs.csv') as f:
         reader = csv.DictReader(f)
@@ -80,8 +67,34 @@ def load_data():
                 summary='',
                 source_code=''
             ))
+    
+    # Create a set of valid program IDs for quick lookup
+    valid_program_ids = {program.id for program in programs}
+    
+    # Now load relations, checking if both IDs exist in the programs
+    relations = []
+    with open('abap_program_relations.csv') as f:
+        reader = csv.DictReader(f)
+        i = 0
+        for row in reader:
+            if i == 0:
+                i += 1
+                continue
+                
+            abap_program_id = row['\ufeffabap_program_id']
+            related_abap_program_id = row['related_abap_program_id']
+            
+            # Only add the relation if both IDs exist in the programs list
+            if abap_program_id in valid_program_ids and related_abap_program_id in valid_program_ids:
+                relations.append(AbapProgramRelation(
+                    abap_program_id=abap_program_id,
+                    relation_type=row['relation_type'], 
+                    related_abap_program_id=related_abap_program_id
+                ))
 
     return relations, programs
+
+
 
 # TO-DO:
 # implement this method
